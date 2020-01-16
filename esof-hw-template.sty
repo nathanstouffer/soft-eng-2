@@ -1,0 +1,21 @@
+% This package defines commands and a template for homeworks in 
+% Adv. Software Engineering (ESOF 422 at Montana State University)
+
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{hw-template}[2020/01/03 Custom HW Template Package]
+
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+
+% Options would go in this spot
+%\DeclareOption...
+
+%\ProcessOptions
+
+\newcommand{\coverpage}[1] {
+	\title{ESOF 422 - Homework #1}
+	\author{Nathan Stouffer and Kevin Browder}
+	\maketitle
+	\newpage
+}
