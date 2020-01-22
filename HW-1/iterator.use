@@ -1,0 +1,44 @@
+model IteratorPattern
+
+abstract class Aggregate
+attributes
+operations
+  iterator()
+end
+
+abstract class Iterator
+attributes
+operations
+  next()
+  hasNext()
+end
+
+class ConcreteAggregate
+attributes
+operations
+  iterator()
+end
+
+class ConcreteIterator
+attributes
+operations
+  next()
+  hasNext()
+end
+
+association Create between
+  Aggregate[0]
+  Iterator[0..*]
+end
+
+
+
+aggregation whole between
+  ConcreteIterator[0..*]
+  ConcreteAggregate[0..*]
+end
+
+association aa between
+  Aggregate[1]
+  ConcreteAggregate[1]
+end
