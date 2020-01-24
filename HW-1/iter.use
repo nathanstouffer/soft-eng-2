@@ -1,19 +1,33 @@
 model IteratorPattern
 
-abstract class Iterator
+class Iterator
 attributes
 operations
   next()
+    begin
+    end
+
   hasNext(): Boolean
+    begin
+    end
+
 end
 
-class Container
+class Container < Iterator
 attributes
 operations
-  populate()
   set()
+    begin
+    end
+
   get()
+
   createIterator(): Iterator
+    begin
+      declare c:Container;
+      result := c
+    end
+
   next()
   hasNext(): Boolean
 end
@@ -21,14 +35,25 @@ end
 class Client
 attributes
 operations
+  populateContainer()
+    begin
+      declare c:Container;
+      c.set()
+    end
+
+  traverse()
+    begin
+      declare trav:Iterator;
+      trav.next()
+    end
 end
 
-association a between
-  Iterator[0]
-  Container[0]
+association client_container between
+  Client[0] role client2
+  Container[0..*] role container
 end
 
-association aa between
-  Client[1]
-  Container[0..*]
+association client_iterator between
+  Client[0] role client1
+  Iterator[0..*] role iter
 end
