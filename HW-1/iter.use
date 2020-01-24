@@ -1,0 +1,34 @@
+model IteratorPattern
+
+abstract class Iterator
+attributes
+operations
+  next()
+  hasNext(): Boolean
+end
+
+class Container
+attributes
+operations
+  populate()
+  set()
+  get()
+  createIterator(): Iterator
+  next()
+  hasNext(): Boolean
+end
+
+class Client
+attributes
+operations
+end
+
+association a between
+  Iterator[0]
+  Container[0]
+end
+
+association aa between
+  Client[1]
+  Container[0..*]
+end
