@@ -12,7 +12,89 @@
 \author{Nathan Stouffer and Kevin Browder}
 
 \maketitle
+\newpage
 
+\section*{Question 1}
+\subsection*{.use}
+\begin{Verbatim}
+model IteratorPattern
 
+class Iterator
+attributes
+operations
+next()
+begin
+end
+
+hasNext(): Boolean
+begin
+end
+
+end
+
+class Container < Iterator
+attributes
+operations
+set()
+begin
+end
+
+get()
+
+createIterator(): Iterator
+begin
+declare c:Container;
+result := c
+end
+
+next()
+hasNext(): Boolean
+end
+
+class Client
+attributes
+operations
+populateContainer()
+begin
+declare c:Container;
+c.set()
+end
+
+traverse()
+begin
+declare trav:Iterator;
+trav.next()
+end
+end
+
+association client_container between
+Client[0] role client2
+Container[0..*] role container
+end
+
+association client_iterator between
+Client[0] role client1
+Iterator[0..*] role iter
+end
+\end{Verbatim}
+
+\section*{Question 2}
+\subsection*{.x}
+\begin{Verbatim}
+-- This file creates 1 client, 1 container, and 2 iterators. We first
+-- assume that the Contianer has information we would like to iterate over.
+-- We then call the necessary methods and iterate over the contents.
+
+!create client:Client
+!create container:Container
+!insert (client,container) into client_container
+!client.populateContainer()
+
+!container.createIterator()
+!create iter:Iterator
+!insert (client,iter) into client_iterator
+
+!client.traverse()
+\end{Verbatim}
 
 \end{document}
