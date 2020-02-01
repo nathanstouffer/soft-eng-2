@@ -9,6 +9,7 @@ operations
 
   hasNext(): Boolean
     begin
+      result := true
     end
 
 end
@@ -24,8 +25,7 @@ operations
 
   createIterator(): Iterator
     begin
-      declare c:Container;
-      result := c
+      result := self.iter;
     end
 
   next()
@@ -37,23 +37,31 @@ attributes
 operations
   populateContainer()
     begin
-      declare c:Container;
-      c.set()
+      for c in self.containers do
+        c.set();
+      end
     end
 
   traverse()
     begin
-      declare trav:Iterator;
-      trav.next()
+      for iter in self.iterators do
+        iter.hasNext();
+        iter.next();
+      end
     end
 end
 
 association client_container between
   Client[0] role client2
-  Container[0..*] role container
+  Container[0..*] role containers
 end
 
 association client_iterator between
   Client[0] role client1
-  Iterator[0..*] role iter
+  Iterator[0..*] role iterators
+end
+
+association container_iterator between
+  Container[1] role cont
+  Iterator[1] role iter
 end

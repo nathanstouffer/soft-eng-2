@@ -7,8 +7,10 @@
 !insert (client,container) into client_container
 !client.populateContainer()
 
-!container.createIterator()
 !create iter:Iterator
+!insert (container,iter) into container_iterator
+
+!container.createIterator()
 !insert (client,iter) into client_iterator
 
 !client.traverse()
