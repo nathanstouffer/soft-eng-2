@@ -7,9 +7,7 @@ attributes
   age:Integer
   salary:Real
 operations
-  raiseSalary(rate:Real):Real
-    begin
-    end
+  raiseSalary(amount:Real):Real
 end
 
 --company class
@@ -19,7 +17,11 @@ attributes
   location:String
 operations
   hire(p:Person)
+    begin
+    end
   fire(p:Person)
+    begin
+    end
 end
 
 --associations
@@ -42,6 +44,6 @@ context Company::fire(p : Person)
   pre  firePre:  employee->includes(p)
   post firePost: employee->excludes(p)
 
-context Person::raiseSalary(rate : Real) : Real
+context Person::raiseSalary(amount : Real) : Real
   post raiseSalaryPost:
-    salary = salary@pre*(rate)
+    salary = salary@pre+amount

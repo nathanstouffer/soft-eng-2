@@ -81,5 +81,33 @@ getTotalCharge():Real
 \begin{Verbatim}
 
 \end{Verbatim}
+\section{Question 3}
+\subsection*{Part 1}
+\begin{Verbatim}
+context Company::hire(p:Person)
+	pre hirePre1: p.isDefined()
+	post hirePost1: employee->includes(p)
+
+context Company::fire(p : Person)
+	pre  firePre:  employee->includes(p)
+	post firePost: employee->excludes(p)
+
+context Person::raiseSalary(amount : Real) : Real
+	post raiseSalaryPost:
+		salary = salary@pre+amount
+\end{Verbatim}
+Citiation: http://useocl.sourceforge.net/w/index.php/Validate\_pre-\_and\_postconditions
+\subsection*{Part 2}
+\begin{figure}
+	\includegraphics[width=\linewidth]{soil1.PNG}
+	\caption{Hire and Fire Testing}
+	\label{fig:seq}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{soil2.PNG}
+	\caption{raiseSalary Testing}
+	\label{fig:seq}
+\end{figure}
 
 \end{document}
