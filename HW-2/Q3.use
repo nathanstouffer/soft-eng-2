@@ -1,5 +1,6 @@
 model work
---classes
+
+--person class
 class Person
 attributes
   name:String
@@ -11,6 +12,7 @@ operations
     end
 end
 
+--company class
 class Company
 attributes
   name:String
@@ -20,12 +22,16 @@ operations
   fire(p:Person)
 end
 
-association WorksFor between
+--associations
+
+--association between Person and Company
+association P_C between
   Person [*] role employee
   Company [0..1] role employer
 end
 
 --constraints
+
 constraints
 
 context Company::hire(p:Person)
