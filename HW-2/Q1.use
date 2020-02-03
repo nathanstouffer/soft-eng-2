@@ -139,3 +139,4 @@ context Customer
   inv maxRental:numRen <= 10
   inv agreement:rentals->size = numRen
   inv rentals:rentals->notEmpty
+  inv daysRented:rentals->select(daysRented > 3)->notEmpty

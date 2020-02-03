@@ -1,0 +1,236 @@
+-- Use file for question 2 of HW 2 in Adv. Software Engineering.
+-- The file models a Loyalty Program system involving customers
+-- that get services from Program Partners depending on their status
+
+model LoyaltyProgram
+
+-- enumerations
+
+  -- define enumeration for card type
+  enum Color {silver, gold}
+
+-- classes
+
+  -- define Date class, this is a utility class
+  class Date
+    attributes
+      now : Date
+    operations
+      isBefore(t: Date): Boolean
+      isAfter(t: Date): Boolean
+      equals(t: Date): Boolean
+  end
+
+  -- define class LoyaltyProgram
+  class LoyaltyProgram
+    attributes
+      name: String
+    operations
+      enroll(c: Customer)
+      getServices(): Set(Service)
+  end
+
+  -- define Customer class
+  class Customer
+    attributes
+      name: String
+      title: String
+      isMale: Boolean
+      dateOfBirth: Date
+      age: Integer        -- derived but use will not accept / in front of attribute
+    operations
+      age(): Integer
+      birthday()
+  end
+
+  -- define ProgramPartner class
+  class ProgramPartner
+    attributes
+      numberOfCustomers: Integer
+      name: String
+    operations
+  end
+
+  -- define CustomerCard class
+  class CustomerCard
+    attributes
+      valid: Boolean
+      validFrom: Date
+      goodThru: Date
+      color: Color
+      printedName: String     -- derived but use will not accept / in front of attribute
+    operations
+  end
+
+  -- define LoyaltyAccount class
+  class LoyaltyAccount
+    attributes
+      points: Integer
+      number: Integer
+    operations
+      earn(i: Integer)
+      burn(i: Integer)
+      isEmpty(): Boolean
+  end
+
+  -- define Service class
+  class Service
+    attributes
+      condition: Boolean
+      pointsEarned: Integer
+      pointsBurned: Integer
+      description: String
+      serviceNr: Integer
+    operations
+      calcPoints(): Integer
+  end
+
+  -- define Transaction class
+  class Transaction
+    attributes
+      points: Integer
+      date: Date
+      amount: Real
+    operations
+      program(): LoyaltyProgram
+  end
+
+  -- define class Burning
+  class Burning < Transaction
+    attributes
+    operations
+  end
+
+  -- define class Earning
+  class Earning < Transaction
+    attributes
+    operations
+  end
+
+  -- define Membership association class
+  associationclass Membership
+    between
+      LoyaltyProgram[0..*] role programs
+      Customer[0..*] role participants
+    attributes
+    operations
+  end
+
+  -- define ServiceLevel class
+  class ServiceLevel
+    attributes
+      name: String
+    operations
+  end
+
+-- associations
+
+  -- association between LoyaltyProgram and ProgramPartner
+  association lp_pp between
+    LoyaltyProgram[1..*] role programs
+    ProgramPartner[1..*] role partners
+  end
+
+  -- association between LoyaltyProgram and ServiceLevel
+  association lp_sl between
+    LoyaltyProgram[1] role program
+    ServiceLevel[1..*] role levels ordered
+  end
+
+  -- association between Customer and CustomerCard
+  association c_cc between
+    Customer[1] role owner
+    CustomerCard[0..*] role cards
+  end
+
+  -- assocation between Membership and ServiceLevel
+  association m_sl between
+    Membership[0..*]
+    ServiceLevel[1] role currentLevel
+  end
+
+  -- association between Membership and LoyaltyAccount
+  association m_la between
+    Membership[1]
+    LoyaltyAccount[0..1] role account
+  end
+
+  -- association between Membership and CustomerCard
+  association m_cc between
+    Membership[1]
+    CustomerCard[1] role card
+  end
+
+  -- association between ProgramPartner and Service
+  association pp_s between
+    ProgramPartner[1] role partner
+    Service[0..*] role deliveredServices
+  end
+
+  -- association between Service and ServiceLevel
+  association s_sl between
+    Service[0..*] role availableServices
+    ServiceLevel[1] role level
+  end
+
+  -- association between Service and Transaction
+  association s_t between
+    Service[1] role generatedBy
+    Transaction[0..*] role transactions
+  end
+
+  -- association between LoyaltyAccount and Transaction
+  association la_t between
+    LoyaltyAccount[1] role account
+    Transaction[0..*] role transactions
+  end
+
+  -- association between CustomerCard and Transaction
+  association cc_t between
+    CustomerCard[1] role card
+    Transaction[0..*] role transactions
+  end
+
+-- constraints
+
+  constraints
+
+  -- Question 1
+  -- context LoyaltyAccount::points
+  -- init: 0
+
+  -- context CustomerCard::valid
+  -- init: true
+
+  -- Question 2
+  context LoyaltyProgram
+  inv minLevels: levels->size() > 0
+
+  -- Question 3
+  -- context LoyaltyProgram::getServices():Set( Services)
+  -- body: partners->collect(deliveredServices)->asSet()
+
+  -- Question 4
+  -- context LoyaltyProgram::getServices(pp: ProgramPartner): Set(Services)
+  -- body: if partners->includes(pp)
+  --       then pp.deliveredServices->asSet()
+  --       else Set{}
+  --       endif
+
+  -- Question 5
+  -- from context of Service
+  context Service
+  inv serviceBurnGeqEarn: self.transactions->select(oclIsTypeOf(Earning))->forAll(t | pointsEarned > t.points)
+
+  -- from context of ProgramPartner
+  context ProgramPartner
+  inv: self.deliveredServices->forAll(ds | ds.transactions->select(oclIsTypeOf(Earning))->forAll(t | ds.pointsEarned > t.points))
+
+  -- Question 6
+  context LoyaltyProgram
+  inv noTransaction: self.partners->collect(deliveredServices)->forAll(ds | ds.pointsEarned = 0 and ds.pointsBurned = 0) implies membership.account->isEmpty()
+
+  -- Question 7
+  context Customer::birthday()
+    pre birthdayPre: true
+    post birthdayPost: age = age@pre + 1
