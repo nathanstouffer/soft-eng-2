@@ -25,60 +25,172 @@
 	
 	\noindent
 	Figure \ref{fig:q1class} generated with the following .use file:
-\begin{Verbatim}
---getCharge operation in Rental class
-getCharge():Real
-	begin
-		declare wrkCh:Real, m:Movie, pc:PriceCode,dy:Integer;
-		m:=self.getMovie();
-		dy:=self.getDaysRented();
-		pc:=m.getPriceCode();
-
-		wrkCh:=0;
-
-		if pc=PriceCode::regular then
-			wrkCh:=2.0;
-			if dy > 2 then
-				wrkCh:=wrkCh + (dy -2) * 1.5;
+	\begin{Verbatim}
+		model MovieRental
+		enum PriceCode {regular, family, newRelease}
+		
+		--classes
+		
+		class Customer
+		attributes
+			name:String
+			numRen:Integer
+		operations
+			addRental()
+			begin
+			end
+		
+		getName()
+		
+		getTotalCharge():Real
+			begin
+				declare totalCharge:Real, ch:Real;
+				totalCharge:=0;
+				for ren in self.rentals do
+					ch:=ren.getCharge();
+					totalCharge:=totalCharge + ch;
+				end;
+				result:=totalCharge;
 			end;
-		end;
-
-		if pc=PriceCode::family then
-			wrkCh:=1.5;
-			if dy > 3 then
-				wrkCh:=wrkCh + (dy -3) * 1.5;
-			end;
-		end;
-
-		if pc=PriceCode::newRelease then
-			wrkCh:=dy * 3.0;
-		end;
-
-		result:=wrkCh;
-end
-
---getTotalCharge operation in customer class
-getTotalCharge():Real
-	begin
-		declare totalCharge:Real, ch:Real;
-		totalCharge:=0;
-		for ren in self.rentals do
-			ch:=ren.getCharge();
-			totalCharge:=totalCharge + ch;
-		end;
-		result:=totalCharge;
-	end;
-\end{Verbatim}
+		
+		Statement()
+			begin
+				declare aCharge:Charge, sm:Movie, ch:Real, t:String;
+				self.numRen:=self.rentals->size();
+				for ren in self.rentals do
+					ch:=ren.getCharge();
+					sm:=ren.getMovie();
+					t:=sm.getTitle();
+					aCharge:= new Charge;
+					aCharge.chVal:=ch;
+					aCharge.chT:=t;
+					insert(self,aCharge) into customerCharges
+				end
+			end
+		end
+		
+		class Rental
+		attributes
+			daysRented:Integer
+		
+		operations
+			getDaysRented():Integer
+				begin
+					result := self.daysRented;
+				end
+		
+		getMovie(): Movie
+			begin
+				result := self.movie;
+			end
+		
+		getCharge():Real
+			begin
+				declare wrkCh:Real, m:Movie, pc:PriceCode,dy:Integer;
+				m:=self.getMovie();
+				dy:=self.getDaysRented();
+				pc:=m.getPriceCode();
+		
+				wrkCh:=0;
+		
+				if pc=PriceCode::regular then
+					wrkCh:=2.0;
+					if dy > 2 then
+						wrkCh:=wrkCh + (dy -2) * 1.5;
+					end;
+				end;
+		
+				if pc=PriceCode::family then
+					wrkCh:=1.5;
+					if dy > 3 then
+						wrkCh:=wrkCh + (dy -3) * 1.5;
+					end;
+				end;
+		
+				if pc=PriceCode::newRelease then
+					wrkCh:=dy * 3.0;
+				end;
+		
+				result:=wrkCh;
+			end
+		end
+		
+		class Movie
+		attributes
+			title:String
+			priceCode:PriceCode
+		operations
+			getPriceCode():PriceCode
+				begin
+					result := self.priceCode;
+				end
+		
+		setPriceCode(code:PriceCode)
+			begin
+				self.priceCode := code;
+			end
+		
+		getTitle():String
+			begin
+				result := self.title;
+			end
+		end
+		
+		class Charge
+		attributes
+			chVal:Real
+			chT: String
+		operations
+		end
+		
+		--associations
+		
+		--association between customer and rental
+		association custRentals between
+			Customer [1] role renter
+			Rental [0..*] role rentals
+		end
+		
+		--association between rental and movie
+		association movRental between
+			Rental [0..*] role movRentals
+			Movie [1] role movie
+		end
+		
+		--association between customer and charge
+		association customerCharges between
+			Customer [1] role cust
+			Charge [0..*] role charges
+		end
+		
+		--constraints
+		
+		constraints
+		context Customer
+			inv maxRental:numRen <= 10
+			inv agreement:rentals->size = numRen
+			inv rentals:rentals->notEmpty
+			inv daysRented:rentals->select(daysRented > 3)->notEmpty
+	\end{Verbatim}
 	
 	\noindent
 	Using the code in the following .x file, we created the following object and sequence diagrams. Both of these were checked with our constraints.
 	%TODO Kev, insert your .x file here. Then uncommment this block
-%\begin{Verbatim}
-%
-%\end{Verbatim}
-	%
-	%\noindent
-	%Figure \ref{fig:q1obj} shows the object diagram as well as the check on our invariants. Figure \ref{fig:q1seq} shows the sequence diagram.
+	\begin{Verbatim}
+		!create movie1:Movie
+		!create rental1:Rental
+		!create customer1:Customer
+		!create charge1:Charge
+		
+		!insert (rental1, movie1) into movRental
+		!insert (customer1, rental1) into custRentals
+		!insert (customer1, charge1) into customerCharges
+		
+		!set customer1.numRen := 1
+		!set rental1.daysRented := 4
+	\end{Verbatim}
+	\noindent
+	Figure \ref{fig:q1obj} shows the object diagram as well as the check on our invariants. Figure \ref{fig:q1seq} shows the sequence diagram.
 	\begin{figure}[h]
 		\includegraphics[width=\linewidth]{Q1ObjPNG.PNG}
 		\caption{Object Diagram and Checking Constraints}
@@ -420,22 +532,59 @@ post birthdayPost: age = age@pre + 1
 
 % TODO insert the uml class diagram and the .use file
 
-\begin{Verbatim}
-context Company::hire(p:Person)
-	pre hirePre1: p.isDefined()
-	post hirePost1: employee->includes(p)
-
-context Company::fire(p : Person)
-	pre  firePre:  employee->includes(p)
-	post firePost: employee->excludes(p)
-
-context Person::raiseSalary(amount : Real) : Real
-	post raiseSalaryPost:
-		salary = salary@pre+amount
-\end{Verbatim}
+	\begin{Verbatim}
+	model work
+	
+	--person class
+	class Person
+	attributes
+		name:String
+		age:Integer
+		salary:Real
+	operations
+		raiseSalary(amount:Real):Real
+	end
+	
+	--company class
+	class Company
+	attributes
+		name:String
+		location:String
+	operations
+		hire(p:Person)
+			begin
+			end
+		fire(p:Person)
+			begin
+			end
+	end
+	
+	--associations
+	
+	--association between Person and Company
+	association P_C between
+		Person [*] role employee
+		Company [0..1] role employer
+	end
+	
+	--constraints
+	
+	constraints
+	
+	context Company::hire(p:Person)
+		pre hirePre1: p.isDefined()
+		post hirePost1: employee->includes(p)
+	
+	context Company::fire(p : Person)
+		pre  firePre:  employee->includes(p)
+		post firePost: employee->excludes(p)
+	
+	context Person::raiseSalary(amount : Real) : Real
+		post raiseSalaryPost:
+			salary = salary@pre+amount
+	\end{Verbatim}
 	We found these pre and post conditions in the documentation on the following website: \newline
 	http://useocl.sourceforge.net/w/index.php/Validate\_pre-\_and\_postconditions
-
 	\begin{figure}[h]
 		\includegraphics[width=\linewidth]{soil1.PNG}
 		\caption{Hire and Fire Testing}
