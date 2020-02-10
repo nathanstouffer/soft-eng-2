@@ -1,0 +1,73 @@
+/* This is a state machine model for a first person shooter game */
+
+model FPS
+
+-- class definitions
+
+  abstract class Player
+    attributes
+      health: Integer init: 100
+    operations
+  end
+
+  class Opponent < Player
+    attributes
+    operations
+  end
+
+  class FPS < Player
+    attributes
+    operations
+
+    -- state machine for FPS
+
+    statemachines
+
+      /* The following state machine tracks the state of a player in
+       * a first person shooter game */
+      psm PlayerState
+        states
+          -- the start node
+          startUp:initial
+          -- initial state after creation
+          neutral
+          -- player panics
+          panic
+          -- player is attacking another player
+          attack
+          -- player is dead
+          die
+        transitions
+          -- define transition to initial state
+          startUp -> neutral      { create }
+      end
+  end
+
+  abstract class Weapon
+    attributes
+      damage: Integer
+    operations
+      engage()
+  end
+
+  class Knife < Weapon
+    attributes
+    operations
+  end
+
+  class Gun < Weapon
+    attributes
+    operations
+  end
+
+-- define associations
+
+  association fps_opp between
+    FPS[0] role fps
+    Opponent[0..*] role opp
+  end
+
+  association p_w between
+    Player[1] role player
+    Weapon[0..3] role weapons
+  end
