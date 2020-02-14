@@ -1,5 +1,5 @@
  model CoffeeDispenser
- 
+
  /*
   * The State pattern interface.
   */
@@ -8,11 +8,11 @@
    accept(i:Integer)
    begin
    end
-   
+
    brew()
    begin
    end
-   
+
    reset()
    begin
    end
@@ -26,18 +26,18 @@
            WriteLine('In state:noCoins operation:accept:');
 	   self.coffeeDispenser.amount := self.coffeeDispenser.amount + i;
 	   dollars := self.coffeeDispenser.amount;
-	   
+
 	   if (dollars > 0 and dollars < 100) then
 	     self.coffeeDispenser.coffeeState := self.coffeeDispenser.hasCoinsState
 	   end;
-	   
+
 	   if dollars > 100 then
 	     self.coffeeDispenser.coffeeState := self.coffeeDispenser.enoughCoinsState
 	   end;
     end
 
     brew()
-    begin 
+    begin
 	  WriteLine('In state:noCoins operation:brew YOU MUST INSERT MONEY BEFORE YOU BREW');
     end
 
@@ -56,17 +56,17 @@
           WriteLine('In state:hasCoins operation:accept:');
 	  self.coffeeDispenser.amount := self.coffeeDispenser.amount + i;
 	  dollars := self.coffeeDispenser.amount;
-	  
+
 	  if (dollars > 100) then
 	     self.coffeeDispenser.coffeeState := self.coffeeDispenser.enoughCoinsState
 	  end;
    end
-   
+
    brew()
    begin
      WriteLine('In state:hasCoins operation:brew YOU NEED TO ADD MORE MONEY');
    end
-   
+
    reset()
    begin
          WriteLine('In state:hasCoins operation:reset HERE ARE YOUR COINS');
@@ -82,14 +82,14 @@
       WriteLine('In state:enoughCoins operation:accept:');
       self.coffeeDispenser.amount := self.coffeeDispenser.amount + i;
    end
-   
+
    brew()
    begin
      WriteLine('In state:enoughCoins operation:brew HERE IS YOUR COFFEE AND YOUR CHANGE (IF ANY)');
      self.coffeeDispenser.amount := 0;
      self.coffeeDispenser.coffeeState := self.coffeeDispenser.noCoinsState;
    end
-   
+
    reset()
    begin
      WriteLine('In state:enoughCoins operation:reset HERE IS YOUR MONEY (IF ANY)');
@@ -108,7 +108,7 @@
      noCoinsState : CoffeeState
      hasCoinsState : CoffeeState
      enoughCoinsState : CoffeeState
-     
+
    operations
      /* create a new coffee dispenser */
      initInstance()
@@ -117,29 +117,29 @@
 	   self.noCoinsState := new noCoins;
 	   self.hasCoinsState := new hasCoins;
 	   self.enoughCoinsState := new enoughCoins;
-	   
+
            self.coffeeState := self.noCoinsState; -- we start in the noCoins state
      end
 
      /* A coin is inserted into the dispenser. Valid coins are: 10,20,50,100 and 200. */
      /* We delegate calls to the State pattern interface */
-	 
+
      accept(i:Integer)
      begin
        self.coffeeState.accept(i);
      end
      pre: let validCoins = Set{10,20,50,100,200} in validCoins->includes(i)
-     
+
      brew()
      begin
        self.coffeeState.brew();
      end
-     
+
      reset()
      begin
 	   self.coffeeState.reset();
      end
-	 
+
    statemachines
      psm StatePattern
 	   states
@@ -147,7 +147,8 @@
 		 noCoins       [coffeeState = noCoinsState]
 		 hasCoins      [coffeeState = hasCoinsState]
 		 enoughCoins   [coffeeState = enoughCoinsState]
-	   transitions
+
+     transitions
 	     startUp -> noCoins {create}
 		 noCoins -> hasCoins { [i > 0 and coffeeState = noCoinsState] accept() }
 		 noCoins -> enoughCoins { [i >= 100 and coffeeState = noCoinsState] accept() }
@@ -161,7 +162,7 @@
 		 enoughCoins -> enoughCoins { [coffeeState = enoughCoinsState] accept() }
 		 enoughCoins -> noCoins { [coffeeState = enoughCoinsState] reset() }
 	 end
-   
+
      psm Usage
        states
          -- The start node
@@ -187,7 +188,7 @@
          hasCoins -> hasCoins    { [i + amount < 100] accept() }
          -- Abort
          enoughCoins -> noCoins  { reset()  }
-         -- Brew coffe, no change ;-)
+         -- Brew coffee, no change ;-)
          enoughCoins -> noCoins  { brew()   }
      end
  end

@@ -65,7 +65,7 @@ model LoyaltyProgram
   -- define LoyaltyAccount class
   class LoyaltyAccount
     attributes
-      points: Integer
+      points: Integer init = 0
       number: Integer
     operations
       earn(i: Integer)
