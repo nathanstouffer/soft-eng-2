@@ -29,7 +29,17 @@ In question 1, we are asked to give the RBML Structural Pattern Specifications f
 
 \subsection*{Singleton Pattern}
 
+In Figure \ref{fig:singleton-rbml}, we give the RBML Specification of the Iterator Design Pattern.
+
 \fig{singleton-rbml}{.4}{RBML Specification of the Singleton Design Pattern}
+
+We now give a compliant UML class diagram with the Singleton Patter in Figure \ref{fig:singleton-inst}. On the left, we have the RBML diagram and on the right there is the UML diagram. The dotted arrows bind the elements of the class diagram to the RBML.
+
+\fig{singleton-inst}{0.75}{Compliant diagram Singleton diagram}
+
+We now give a near instance of the Singleton Pattern in Figure \ref{fig:singleton-ninst}. The UML diagram is a near instance since there are 2 instances of the class ShouldBeSingle but there should only be 1.
+
+\fig{singleton-ninst}{0.5}{A near instance of the Singleton Pattern}
 
 \subsection*{State Pattern}
 
@@ -37,7 +47,19 @@ In question 1, we are asked to give the RBML Structural Pattern Specifications f
 
 \subsection*{Iterator Pattern}
 
+In Figure \ref{fig:iterator-rbml}, we give the RBML Specification of the Iterator Design Pattern.
+
 \fig{iterator-rbml}{.5}{RBML Specification of the Iterator Design Pattern}
+
+We now show an example of a UML diagram that is compliant with the RBML of the Iterator Pattern
+
+\fig{iterator-inst}{0.75}{UML class diagram compliant with Iterator RBML}
+
+Each of the elements in the UML class diagram on the left are bound to elements in the RBML of the Iterator pattern on the right. So we know that the class diagram is compliant with the RBML.
+
+We now show an example of a UML class diagram that is not compliant with the RBML diagram for the Iterator Pattern. Figure \ref{fig:iterator-ninst} shows the near instance. The reason Figure \ref{fig:iterator-ninst} shows a near instance is because the class Iterator is not abstract, it is an actual class and ArrayList just inherits from Iterator.
+
+\fig{iterator-ninst}{0.15}{Showing a near instance of the Iterator Pattern}
 
 \subsection*{Visitor Pattern}
 
