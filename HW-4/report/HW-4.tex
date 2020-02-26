@@ -6,19 +6,19 @@
 \usepackage{multicol}
 \usepackage{fancyvrb}
 
-\newcommand{\fig}[2]{ 
+\newcommand{\fig}[3]{ 
 	\begin{figure}[h]
 		\centering
-		\caption{#2}
-		\includegraphics[width=.5\textwidth]{pics/#1}
+		\caption{#3}
+		\includegraphics[width=#2\textwidth]{pics/#1}
 		\label{fig:#1}
 	\end{figure} 
 }
 
 \begin{document}
 	
-\title{ESOF 422 - Homework 3}
-\author{Nathan Stouffer and Kevin Browder}
+\title{ESOF 422 - Homework 4}
+\author{Nathan Stouffer \and Kevin Browder}
 
 \maketitle
 \newpage
@@ -29,18 +29,76 @@ In question 1, we are asked to give the RBML Structural Pattern Specifications f
 
 \subsection*{Singleton Pattern}
 
+In Figure \ref{fig:singleton-rbml}, we give the RBML Specification of the Iterator Design Pattern.
 
+\fig{singleton-rbml}{.4}{RBML Specification of the Singleton Design Pattern}
+
+We now give a compliant UML class diagram with the Singleton Patter in Figure \ref{fig:singleton-inst}. On the left, we have the RBML diagram and on the right there is the UML diagram. The dotted arrows bind the elements of the class diagram to the RBML.
+
+\fig{singleton-inst}{0.75}{Compliant diagram Singleton diagram}
+
+We now give a near instance of the Singleton Pattern in Figure \ref{fig:singleton-ninst}. The UML diagram is a near instance since there are 2 instances of the class ShouldBeSingle but there should only be 1.
+
+\fig{singleton-ninst}{0.5}{A near instance of the Singleton Pattern}
 
 \subsection*{State Pattern}
 
-
+\fig{state-rbml}{.95}{RBML Specification of the State Design Pattern}
 
 \subsection*{Iterator Pattern}
 
-\fig{iterator-rbml}{RBML Specification of the Iterator Design Pattern}
+In Figure \ref{fig:iterator-rbml}, we give the RBML Specification of the Iterator Design Pattern.
+
+\fig{iterator-rbml}{.5}{RBML Specification of the Iterator Design Pattern}
+
+We now show an example of a UML diagram that is compliant with the RBML of the Iterator Pattern
+
+\fig{iterator-inst}{0.75}{UML class diagram compliant with Iterator RBML}
+
+Each of the elements in the UML class diagram on the left are bound to elements in the RBML of the Iterator pattern on the right. So we know that the class diagram is compliant with the RBML.
+
+We now show an example of a UML class diagram that is not compliant with the RBML diagram for the Iterator Pattern. Figure \ref{fig:iterator-ninst} shows the near instance. The reason Figure \ref{fig:iterator-ninst} shows a near instance is because the class Iterator is not abstract, it is an actual class and ArrayList just inherits from Iterator.
+
+\fig{iterator-ninst}{0.15}{Showing a near instance of the Iterator Pattern}
 
 \subsection*{Visitor Pattern}
 
+\fig{visitor-rbml}{.75}{RBML Specification of the Visitor Design Pattern}
 
+\newpage
+
+\section*{Question 2}
+
+\newpage
+
+\section*{Question 3}
+
+{\bf Part i.} 
+What does it mean to state that RBML characterizes pattern instances? \\\\
+If a RBML charactarizes a pattern, it means two things. First, it means that all instances of that pattern are compliant with the RBML. Second, it also means that all UML diagrams that are compliant with the RBML are actually an instance of that design pattern. This ensures that the set of UML diagrams that are compliant with the RBML consists of all instances of the design pattern and nothing else.
+\newline
+
+\noindent
+{\bf Part ii.} 
+What does it mean to say that RBML defines a specialization of UML at the M2 level? \\\\
+For RBML to define a specialization of UML at the M2 level, it means that RBML restricts the UML meta-model to accept a smaller set of UML class diagrams, which are design patterns.
+\newline
+
+\noindent
+{\bf Part iii.} 
+Select one RBML model from your answers in question 1, and provide two examples of
+operation templates with pre and post conditions. \\\\
+We now give two operation templates for operations in the Iterator Design Pattern.
+
+\begin{Verbatim}
+context |ConcreteContainer::|HasNext(): |Boolean
+pre: true
+post: result = self.|IsNull(self.|Index@pre + 1)
+		
+context |ConcreteContainer::Next(): |DataType
+pre: self.|HasNext()
+post: result = self.|Get(self.|Index@pre + 1)
+		and self.|Index = self.|Index@pre + 1
+\end{Verbatim}
 
 \end{document}
