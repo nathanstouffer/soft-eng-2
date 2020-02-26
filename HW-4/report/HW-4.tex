@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{multicol}
 \usepackage{fancyvrb}
+\usepackage{bibentry}
 
 \newcommand{\fig}[3]{ 
 	\begin{figure}[h]
@@ -16,7 +17,7 @@
 }
 
 \begin{document}
-	
+	\nobibliography*
 \title{ESOF 422 - Homework 4}
 \author{Nathan Stouffer \and Kevin Browder}
 
@@ -40,11 +41,19 @@ We now give a compliant UML class diagram with the Singleton Patter in Figure \r
 We now give a near instance of the Singleton Pattern in Figure \ref{fig:singleton-ninst}. The UML diagram is a near instance since there are 2 instances of the class ShouldBeSingle but there should only be 1.
 
 \fig{singleton-ninst}{0.5}{A near instance of the Singleton Pattern}
+\newpage
 
 \subsection*{State Pattern}
+In Figure \ref{fig:state-rbml}, we give the RBML Specification of the State Design Pattern.
 
 \fig{state-rbml}{.95}{RBML Specification of the State Design Pattern}
 
+We now give a compliant UML class diagram with the State Pattern in Figure \ref{fig:state-inst}. On the top, we have the RBML diagram and on the bottom there is the UML diagram. The dotted arrows bind the elements of the class diagram to the RBML.
+\fig{state-inst}{.75}{A compliant class diagram State Pattern}
+\newpage
+We now give a near instance of the State Pattern in Figure \ref{fig:singleton-ninst}. The UML diagram is a near instance since there are no instances of the class StateOperation method but there should be at least 1.
+\fig{state-ninst}{.75}{A near instance of the State Pattern}
+\newpage
 \subsection*{Iterator Pattern}
 
 In Figure \ref{fig:iterator-rbml}, we give the RBML Specification of the Iterator Design Pattern.
@@ -52,7 +61,7 @@ In Figure \ref{fig:iterator-rbml}, we give the RBML Specification of the Iterato
 \fig{iterator-rbml}{.5}{RBML Specification of the Iterator Design Pattern}
 
 We now show an example of a UML diagram that is compliant with the RBML of the Iterator Pattern
-
+\newpage
 \fig{iterator-inst}{0.75}{UML class diagram compliant with Iterator RBML}
 
 Each of the elements in the UML class diagram on the left are bound to elements in the RBML of the Iterator pattern on the right. So we know that the class diagram is compliant with the RBML.
@@ -60,15 +69,27 @@ Each of the elements in the UML class diagram on the left are bound to elements 
 We now show an example of a UML class diagram that is not compliant with the RBML diagram for the Iterator Pattern. Figure \ref{fig:iterator-ninst} shows the near instance. The reason Figure \ref{fig:iterator-ninst} shows a near instance is because the class Iterator is not abstract, it is an actual class and ArrayList just inherits from Iterator.
 
 \fig{iterator-ninst}{0.15}{Showing a near instance of the Iterator Pattern}
-
+\newpage
 \subsection*{Visitor Pattern}
+In Figure \ref{fig:visitor-rbml}, we give the RBML Specification of the Visitor Design Pattern.
 
 \fig{visitor-rbml}{.75}{RBML Specification of the Visitor Design Pattern}
 
+We now give a compliant UML class diagram with the Visitor Pattern in Figure \ref{fig:visitor-inst}. On the top, we have the RBML diagram and on the bottom there is the UML diagram. The dotted arrows bind the elements of the class diagram to the RBML.
+\fig{visitor-inst}{.85}{A compliant class diagram Visitor Pattern}
+\newpage
+We now give a near instance of the Visitor Pattern in Figure \ref{fig:visitor-ninst}. The UML diagram is a near instance since there are no instances of the association between Object Structure and Element but there should be at least 1.
+\fig{visitor-ninst}{.85}{A near instance of the Visitor Pattern}
+\\
+Citation: \bibentry{france2004uml}
+\newpage
 \newpage
 
 \section*{Question 2}
+We now have the behavior diagram for the Visitor pattern.
 
+\fig{visitor-ips}{.95}{A behavioral diagram for the Visitor pattern}
+Citation: \bibentry{france2004uml}
 \newpage
 
 \section*{Question 3}
@@ -100,5 +121,8 @@ pre: self.|HasNext()
 post: result = self.|Get(self.|Index@pre + 1)
 		and self.|Index = self.|Index@pre + 1
 \end{Verbatim}
+\newpage
+\bibliographystyle{acm}
+\bibliography{document}
 
 \end{document}
