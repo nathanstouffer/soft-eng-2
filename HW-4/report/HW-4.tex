@@ -6,19 +6,19 @@
 \usepackage{multicol}
 \usepackage{fancyvrb}
 
-\newcommand{\fig}[2]{ 
+\newcommand{\fig}[3]{ 
 	\begin{figure}[h]
 		\centering
-		\caption{#2}
-		\includegraphics[width=.5\textwidth]{pics/#1}
+		\caption{#3}
+		\includegraphics[width=#2\textwidth]{pics/#1}
 		\label{fig:#1}
 	\end{figure} 
 }
 
 \begin{document}
 	
-\title{ESOF 422 - Homework 3}
-\author{Nathan Stouffer and Kevin Browder}
+\title{ESOF 422 - Homework 4}
+\author{Nathan Stouffer \and Kevin Browder}
 
 \maketitle
 \newpage
@@ -29,18 +29,54 @@ In question 1, we are asked to give the RBML Structural Pattern Specifications f
 
 \subsection*{Singleton Pattern}
 
-
+\fig{singleton-rbml}{.4}{RBML Specification of the Singleton Design Pattern}
 
 \subsection*{State Pattern}
 
-
+\fig{state-rbml}{.95}{RBML Specification of the State Design Pattern}
 
 \subsection*{Iterator Pattern}
 
-\fig{iterator-rbml}{RBML Specification of the Iterator Design Pattern}
+\fig{iterator-rbml}{.5}{RBML Specification of the Iterator Design Pattern}
 
 \subsection*{Visitor Pattern}
 
+\fig{visitor-rbml}{.75}{RBML Specification of the Visitor Design Pattern}
 
+\newpage
+
+\section*{Question 2}
+
+\newpage
+
+\section*{Question 3}
+
+{\bf Part i.} 
+What does it mean to state that RBML characterizes pattern instances? \\\\
+If a RBML charactarizes a pattern, it means two things. First, it means that all instances of that pattern are compliant with the RBML. Second, it also means that all UML diagrams that are compliant with the RBML are actually an instance of that design pattern. This ensures that the set of UML diagrams that are compliant with the RBML consists of all instances of the design pattern and nothing else.
+\newline
+
+\noindent
+{\bf Part ii.} 
+What does it mean to say that RBML defines a specialization of UML at the M2 level? \\\\
+For RBML to define a specialization of UML at the M2 level, it means that RBML restricts the UML meta-model to accept a smaller set of UML class diagrams, which are design patterns.
+\newline
+
+\noindent
+{\bf Part iii.} 
+Select one RBML model from your answers in question 1, and provide two examples of
+operation templates with pre and post conditions. \\\\
+We now give two operation templates for operations in the Iterator Design Pattern.
+
+\begin{Verbatim}
+context |ConcreteContainer::|HasNext(): |Boolean
+pre: true
+post: result = self.|IsNull(self.|Index@pre + 1)
+		
+context |ConcreteContainer::Next(): |DataType
+pre: self.|HasNext()
+post: result = self.|Get(self.|Index@pre + 1)
+		and self.|Index = self.|Index@pre + 1
+\end{Verbatim}
 
 \end{document}
