@@ -20,7 +20,7 @@ public class Client {
         }
         else {
             computePrimePaths("graph1.txt");       
-            computePrimePaths("graph2.txt");
+            //computePrimePaths("graph2.txt");
         }
     }
     

@@ -155,6 +155,27 @@ We also consider the following (candidate) test paths
 \section*{Question 3}
 Question 3 asks us to implement an algorithm that returns that prime paths of a graph. We do this with a Java implementation. Our program consists of two classes: Path and Graph. \\\\
 The Path class is essentially just a list of nodes in the path. Operations that can be called on a path are queries that tell whether a given path visits a node, tours a subpath, or is a simple path. \\\\
-The Graph class 
+The Graph class uses an adjacency matrix to represent a graph. A client of this class could compute all simple paths or all prime paths. We now describe the algorithm used to compute the prime paths of a graph. \\\\
+To compute all prime paths, we first compute all simple paths. This is done by starting a depth first search at each node, with the extra condition that we only continue the search if the path is simple. Psuedocode is shown below where the variables ``paths'' is a global variable.
+\begin{Verbatim}
+foreach node in Graph:
+	path = node		// start the path as the initial node
+	dfsSimplePath(path)	// recursively compute all simple paths
+	
+dfsSimplePath(path):
+	paths.add(path)		            // add the path to a growing list
+	foreach neighbor of path.last:	     // the last node in the path
+		next = path.add(neighbor)	  // create a new path
+		if next.isSimple():		// test if new path is simple
+			dfsSimplePath(next)	// keep computing dfs
+\end{Verbatim}
+Afte we generate all simple paths, we then sort the paths by length. We then know that the longest simple path is certainly prime. We then iterate through the list of simple paths (largest to smallest). At each iteration, we check if the simple path is a subpath of any prime path. If not, we know that the path is prime and we can add it to the list of prime paths. We then just return that list. \\\\
+To test our program, we used graph shown below in Figure \ref{fig:graph-rep}.
+\fig{graph-rep}{0.25}{Graph picture} \newpage
+Below (in Figure \ref{fig:adj-mtx}), we show the adjacency matrix representing our graph.
+\fig{adj-mtx}{0.5}{Adjacency Matrix} \\
+The output of our program (all the prime paths) is shown below in Figure \ref{fig:prime-paths}.
+\fig{prime-paths}{0.5}{Prime Paths} \\
+In addition to this description and the figures with the output, we also submitted a our .java files and the .txt files with graph inputs.
 
 \end{document}
