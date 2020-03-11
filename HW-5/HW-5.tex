@@ -63,9 +63,9 @@ We consider the following graph
 				\fill [black] (18.46,-23.95) -- (19.35,-23.63) -- (18.56,-23.01);
 			\end{tikzpicture}
 		\end{center}
-	\item % TODO test paths that achieve NC but not EC
-	\item % TODO test paths that achieve EC but not EPC
-	\item % TODO test paths that achieve EPC
+	\item The test path that satisfies NC is [1, 2, 3, 2, 4]. There is no way to get only NC on this graph because there is only one way to get to each node.
+	\item The test path that satisfies EC is [1, 2, 3, 2, 4]This does not achieve EPC because it is missing [3, 2, 3]
+	\item The test path that satisfies EPS is [1, 2, 3, 2, 3, 2, 4]
 \end{enumerate}
 
 \subsection*{Book Question 5}
@@ -124,8 +124,12 @@ We also consider the following (candidate) test paths
 			\fill [black] (24.29,-40.49) -- (25.23,-40.41) -- (24.63,-39.61);
 			\end{tikzpicture}
 		\end{center}
-	\item % TODO TR for EPC (should have 12 of length 2)
-	\item % TODO Do given test paths satisfy EPC?
+	\item TR = \{[1, 2, 3], [1, 2, 4], [2, 3, 2], [3, 2, 3], [3, 2, 4], [2, 4, 5], [2, 4, 6] [4, 5, 6], [4, 6, 1], [5, 6, 1], [6, 1, 7], [6, 1, 2]\}
+	\item No, they are missing [3, 2, 3] and [6, 2, 1] so they do not satisfy EPC.
+	\item No, the test path does not tour the simple path directly. It takes a side trip through the path [6, 1, 2].
+	\item $TR_{NC} = \{[1], [2], [3], [4], [5], [6], [7]\}\\ TR_{EC} = \{[1, 7], [1, 2], [2, 3], [3, 2], [2, 4], [4, 5], [4, 6], [5, 6], [6, 1]\} \\ TR_(PPC) = {[3, 2, 4, 5, 6, 1, 7], [1, 2, 4, 5, 6 ,1], [2, 4, 5, 6, 1, 2], [4, 5, 6, 1, 2, 3], [4, 5, 6, 1, 2, 4], [5, 6, 1, 2, 4, 5], [6, 1, 2, 4, 5, 6], [3, 2, 4, 6, 1, 7], [3, 2, 4, 6, 1, 2], [6, 1, 2, 4, 6], [1, 2, 4, 6, 1], [4, 6, 1, 2, 3], [4, 6, 1, 2, 4], [2, 3, 2], [3, 2, 3]}$ 
+	\item $t_0 = [1, 2, 3, 2, 4, 5, 6, 1, 7]$
+	\item $t_0 = [1, 2, 4, 5, 6, 1, 7] \\ t_0 = [1, 2, 3, 2, 4, 6, 1, 7]$
 \end{enumerate}
 
 \newpage
