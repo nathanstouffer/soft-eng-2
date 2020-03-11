@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package primepath;
+package primepaths;
 
 import java.util.ArrayList;
 
 /**
- *
+ * Class to represent a path in a graph. A path consists of an array
+ * of nodes. Methods include queries about whether the path visits nodes
+ * or tours subpaths as well as the ability to compare the length of two
+ * paths.
+ * 
  * @author Nathan
  */
 public class Path implements Comparable<Path> {
@@ -17,6 +21,7 @@ public class Path implements Comparable<Path> {
     private int pos;
     private int[] nodes;    // array to store the nodes in the path
     
+    /* constructor to initialize the path */
     Path(int first) {
         // initial position is 0
         this.pos = 0;
@@ -106,6 +111,7 @@ public class Path implements Comparable<Path> {
         ARRLENGTH = 2 * ARRLENGTH;
     }
     
+    /* method to clone the current object */
     @Override
     protected Path clone() {
         // create new object
@@ -116,11 +122,35 @@ public class Path implements Comparable<Path> {
         return p;
     }
     
+    /* method to return if the two paths are the equal */
+    public boolean equals(Path p) {
+        if (this.getLength() != p.getLength()) { return false; }
+        for (int i = 0; i < this.getLength(); i++) {
+            if (this.get(i) != p.get(i)) { return false; }
+        }
+        return true;
+    }
+    
+    /* method to compare to paths */
     @Override
     public int compareTo(Path p) {
+        // this path is longer
         if (this.getLength() > p.getLength()) { return 1; }
-        else if (this.getLength() == p.getLength()) { return 0; }
-        else { return -1; }
+        // p is longer
+        else if (this.getLength() < p.getLength()) { return -1; }
+        // this and p are the same
+        else if (this.equals(p)) { return 0; }
+        // paths are the same length, compare values
+        else {
+            // iterate through elements
+            for (int i = 0; i < this.getLength(); i++) {
+                if (this.get(i) > p.get(i)) { return 1; }
+                else if (this.get(i) < p.get(i)) { return -1; }
+            }
+        }
+        // dummy return statement that should never be reached
+        System.err.println("unreachable return statement reached");
+        return 0;
     }
     
     public int getLength() { return this.pos; }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package primepath;
+package primepaths;
 
 // import libraries
 import java.io.File;
@@ -13,9 +13,13 @@ import java.io.BufferedReader;
 // import exceptions
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
- *
+ * Class to represent a graph. This class uses an adjacency matrix to represent
+ * the graph. Operations include the ability to compute all simple and prime paths
+ * found in the graph.
+ * 
  * @author Nathan
  */
 public class Graph {
@@ -27,8 +31,9 @@ public class Graph {
     
     private int NODES;  // variable describing the number of nodes in the graph
     
-    ArrayList<Path> paths;
-    
+    ArrayList<Path> paths;  // variable referenced when computing simple paths
+     
+    /* constructor to read in the graph in file_name */
     Graph(String file_name) {
         this.paths = new ArrayList<Path>();
         
@@ -36,14 +41,53 @@ public class Graph {
         catch (IOException e) { System.err.println("File not found"); }
     }
     
-    public Path[] simplePaths() {        
+    /* method to compute the simple paths of this graph */
+    public Path[] simplePaths() {   
+        // clear paths variable
+        this.paths = new ArrayList<Path>();
+        // compute recursive path searching for each starting node
         for (int i = 0; i < NODES; i++) {
             Path p = new Path(i);
             this.dfsSP(p);
         }
         
+        // copy paths to array
         Path[] ret = new Path[this.paths.size()];
         for (int r = 0; r < ret.length; r++) { ret[r] = this.paths.get(r); }
+        // clear paths variable
+        this.paths = new ArrayList<Path>();
+        // sort array
+        Arrays.sort(ret);
+        return ret;
+    }
+    
+    /* method to compute the prime paths of this graph */
+    public Path[] primePaths() {
+        // get simple paths
+        Path[] simple_paths = this.simplePaths();
+        // array list to store prime paths
+        ArrayList<Path> primes = new ArrayList<Path>();
+        // the largest path is certainly prime, so add it
+        primes.add(simple_paths[simple_paths.length-1]);
+        // check if other paths are prime
+        for (int s = simple_paths.length - 2; s >= 0; s--) {
+            // current path
+            Path curr = simple_paths[s];
+            // assume current path is prime
+            boolean subpath = false;
+            // iterate through all prime paths
+            for (int p = 0; p < primes.size() && !subpath; p++) {
+                Path tmp = primes.get(p);
+                // check if curr is a subpath of any prime path
+                if (tmp.tours(curr)) { subpath = true; }
+            }
+            // if curr is not a subpath, add it to primes
+            if (!subpath) { primes.add(curr); }
+        }
+        
+        // copy primes to an array
+        Path[] ret = new Path[primes.size()];
+        for (int r = 0; r < ret.length; r++) { ret[r] = primes.get(r); }
         return ret;
     }
     
@@ -64,6 +108,7 @@ public class Graph {
         
     }
     
+    /* method to return the array representing the neighbors of a given node */
     private int[] neighbors(int n) {
         if (n < 0) { System.err.println("index is less than 0"); }
         if (n >= NODES) { System.err.println("index is greater than number of nodes"); }

@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package primepath;
-import java.util.ArrayList;
-import java.util.Arrays;
+package primepaths;
 
 /**
  *
@@ -14,10 +12,19 @@ import java.util.Arrays;
 public class Client {
     
     public static void main(String[] args) {
-        computePrimePaths("graph1.txt");       
-        computePrimePaths("graph2.txt");
+        // check if there are command line arguments
+        if (args.length > 1) {
+            for (int a = 1; a < args.length; a++) {
+                computePrimePaths(args[a]);
+            }
+        }
+        else {
+            computePrimePaths("graph1.txt");       
+            computePrimePaths("graph2.txt");
+        }
     }
     
+    /* method to compute the prime paths for the graph in file_name */ 
     public static void computePrimePaths(String file_name) {
         // create graph
         Graph graph = new Graph(file_name);
@@ -31,45 +38,21 @@ public class Client {
         
         // compute simple paths
         Path[] simple_paths = graph.simplePaths();
-        // sort the simle paths
-        Arrays.sort(simple_paths);
-        
         // output the simple paths
         System.out.println("---- Simple Paths ----");
         for (int s = 0; s < simple_paths.length; s++) {
             System.out.println("Path " + (s+1) + ": " + simple_paths[s].toString());
         }
         
-        // compute prime paths
-        ArrayList<Path> primes = new ArrayList<Path>();
-        primes.add(simple_paths[simple_paths.length-1]);    // add largest path
-        for (int s = simple_paths.length - 2; s >= 0; s--) {
-            Path path = simple_paths[s];
-            boolean subpath = false;
-            for (int p = 0; p < primes.size() && !subpath; p++) {
-                Path tmp = primes.get(p);
-                if (tmp.tours(path)) { subpath = true; }
-            }
-            if (!subpath) { primes.add(path); }
-        }
-        
-        Path test = new Path(2); test.addNode(1); test.addNode(2);
-        boolean subpath = false;
-        for (int p = 0; p < primes.size(); p++) {
-            Path tmp = primes.get(p);
-            if (tmp.tours(test)) { 
-                tmp.tours(test);
-                System.out.println(tmp);  
-                subpath = true; 
-            }
-        }
+        Path[] primes = graph.primePaths();
         
         System.out.println("\n---- Prime Paths ----");
-        for (int p = 0; p < primes.size(); p++) {
-            System.out.println("Path " + (p+1) + ": " + primes.get(p).toString());
+        for (int p = 0; p < primes.length; p++) {
+            System.out.println("Path " + (p+1) + ": " + primes[p].toString());
         }
     }
     
+    /* unit testing method */
     public static void testGraph() {
         Graph g = new Graph("test-graph.txt");
         System.out.println(g);
@@ -80,6 +63,7 @@ public class Client {
         }
     }
     
+    /* unit testing method */
     public static void testPath() {
         Path p = new Path(1);
         Path q = new Path(1);
