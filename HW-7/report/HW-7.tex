@@ -1,0 +1,192 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyvrb}
+\usepackage{bibentry}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tikz}
+
+\newcommand{\fig}[3]{ 
+	\begin{figure}[h]
+		\centering
+		\caption{#3}
+		\includegraphics[width=#2\textwidth]{pics/#1}
+		\label{fig:#1}
+	\end{figure} 
+}
+
+\newcommand{\nota}{\overline{a}}
+\newcommand{\notb}{\overline{b}}
+\newcommand{\notc}{\overline{c}}
+\newcommand{\notd}{\overline{d}}
+\newcommand{\fbar}{\overline{f}}
+
+\begin{document}
+\title{ESOF 422 - Homework 7}
+\author{Nathan Stouffer}
+
+\maketitle
+\newpage
+\section*{Question 1}
+
+For Question 1, we consider the following Karnaugh Maps.
+\begin{enumerate}
+	\item $ f = ab \notc + \nota b \notc$
+	\item $ f = ab + a \notb c + \nota \notb c $
+	\item $ f = \nota \notc \notd + \notc d + bcd $
+\end{enumerate}
+First recall the following definitions:
+\begin{enumerate}
+	\item \textbf{Implicant Coverage (IC):} Given DNF representations of a predicate $f$ and it's negation $\overline{f}$, for each implicant in $f$ and $\fbar$, TR contains the requirement that the implicant evaluate to true.
+	\item \textbf{Muptiple Unique True Point Coverage (MUTP):} Given minimal DNF representations of a predicate $f$, for each implicant $i$, choose unique true ponits (UTPs) such that clauses not in $i$ take on values $T$ and $F$.
+	\item \textbf{Corresponding Unique True Point and Near False Point Coverage (CUTPNFP):} Given a minimal DNF representation of a predicate $f$, for each clause $c$ in each implicant $i$, TR contains a unique true point $i$ and a near false point for $c$ such that the points differ only in the truth value of $c$.
+	\item \textbf{Multiple Near False Point Coverage (MNFP):} Given a minimal DNF representation of a predicate $f$, for each literal $c$ in each implicant $i$, TR contains near false points (NFPs) such that clauses not in $i$ take on values $T$ and $F$.
+\end{enumerate}
+
+\subsection*{Map 1}
+
+We consider the map $ f = ab \notc + \nota b \notc $
+\begin{enumerate}[(a)]
+	\item We now give the Karnaugh maps for $f$. Note that the top row corresponds to $ab$ while the first column corresponds to $c$
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|}
+			  & 00 & 01 & 11 & 10 \\
+			\hline
+			0 & & 1 & 1 & \\
+			\hline
+			1 & & & & \\
+			\hline
+		\end{tabular}
+	\end{center}
+	And now the Karnaugh maps for $\fbar$. Note that the top row corresponds to $ab$ while the first column corresponds to $c$
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|}
+			& 00 & 01 & 11 & 10 \\
+			\hline
+			0 & 1 & & & 1 \\
+			\hline
+			1 & 1 & 1 & 1 & 1 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\item Based on the above Karnaugh maps, we can give the nonredundant prime implicant representations for $f$ and $\fbar$. They are as follows: $ f = b \notc $ and $ \fbar = \notb \notc + c $.
+	\item A test set that satisfies Implicant Coverage for the values $a,b,c$ is \{ TTF, TTT, TFF \}.
+	\item A test set that satisfies MUTP is \{ TTF, FTF \}.
+	\item A test set that satisfies CUTPNFP is \{ TTF, TFT, TFF \}.
+	\item A test set that satisfies MNFP is \{ TTT, TFF, FTT, FFF \}.
+	\item A test set that is guaranteed to detect all faults in Figure 8.2 from the book is one that satisfies Minimal MUMCUT criteria (the union of MUTP, CUTPNFP, and MNFP). This set is \{ TTT, TTF, TFT, TFF, FTT, FTF, FFF \}
+\end{enumerate}
+
+\subsection*{Map 2}
+
+We consider the map $ f = ab + a \notb c + \nota \notb c $
+\begin{enumerate}[(a)]
+	\item We now give the Karnaugh maps for $f$. Note that the top row corresponds to $ab$ while the first column corresponds to $c$
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|}
+			& 00 & 01 & 11 & 10 \\
+			\hline
+			0 & & & 1 & \\
+			\hline
+			1 & 1 & & 1 & 1 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	And now the Karnaugh maps for $\fbar$. Note that the top row corresponds to $ab$ while the first column corresponds to $c$
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|}
+			& 00 & 01 & 11 & 10 \\
+			\hline
+			0 & 1 & 1 & & 1 \\
+			\hline
+			1 & & 1 & & \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\item Based on the above Karnaugh maps, we can give the nonredundant prime implicant representations for $f$ and $\fbar$. They are as follows: $ f = ab + \notb c $ and $ \fbar = \nota b + \notb \notc $.
+	\item A test set that satisfies Implicant Coverage for the values $a,b,c$ is \{ TTT, TFT, FTF, FFF \}.
+	\item A test set that satisfies MUTP is \{ TTT, TTF, TFT, FFT \}.
+	\item A test set that satisfies CUTPNFP is \{ TTF, TFF, FTT, FTF, FFT, FFF \}.
+	\item A test set that satisfies MNFP is \{ TTT, TFT, TFF, FTT, FTF, FFF \}.
+	\item A test set that is guaranteed to detect all faults in Figure 8.2 from the book is one that satisfies Minimal MUMCUT criteria (the union of MUTP, CUTPNFP, and MNFP). This set is \{ TTT, TTF, TFT, TFF, FTT, FTF, FFT, FFF \}
+\end{enumerate}
+
+\subsection*{Map 3}
+We consider the map $ f = \nota \notc \notd + \notc d + bcd $
+\begin{enumerate}[(a)]
+	\item We now give the Karnaugh maps for $f$. Note that the top row corresponds to $ab$ while the first column corresponds to $cd$
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|}
+			& 00 & 01 & 11 & 10 \\
+			\hline
+			00 & 1 & 1 & & \\
+			\hline
+			01 & 1 & 1 & 1 & 1 \\
+			\hline
+			11 & & 1 & 1 & \\
+			\hline
+			10 & & & & \\
+			\hline
+		\end{tabular}
+	\end{center}
+	And now the Karnaugh maps for $\fbar$. Note that the top row corresponds to $ab$ while the first column corresponds to $cd$
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|}
+			& 00 & 01 & 11 & 10 \\
+			\hline
+			00 & & & 1 & 1 \\
+			\hline
+			01 & & & & \\
+			\hline
+			11 & 1 & & & 1 \\
+			\hline
+			10 & 1 & 1 & 1 & 1 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\item Based on the above Karnaugh maps, we can give the nonredundant prime implicant representations for $f$ and $\fbar$. They are as follows: $ f = \nota \notc + a \notc d + bc\notd $ and $ \fbar = a \notc \notd + \notb cd + c \notd $.
+	\item A test set that satisfies Implicant Coverage for the values $a,b,c$ is \{ TFFT, TFFF, FTTF, FTFT, FFTT, FFTF \}.
+	\item A test set that satisfies MUTP is \{ TTTF, TTFT, TFFT, FTTF, FTFT, FFFF \}.
+	\item A test set that satisfies CUTPNFP is \{ TTTT, TTTF, TTFT, TTFF, TFTF, TFFF, FTFT, FFTF, FFFF \}.
+	\item A test set that satisfies MNFP is \{ TTTT, TTFT, TTFF, TFTT, TFTF, TFFF, FTTT, FTTF, FTFT, FTFF, FFTT, FFTF, FFFT \}.
+	\item A test set that is guaranteed to detect all faults in Figure 8.2 from the book is one that satisfies Minimal MUMCUT criteria (the union of MUTP, CUTPNFP, and MNFP). This set is \{ TTTT, TTTF, TTFT, TTFF, TFTT, TFTF, TFFT TFFF, FTTT, FTTF, FTFT, FTFF, FFTT, FFTF, FFFT, FFFF \}
+\end{enumerate}
+
+\newpage
+\section*{Question 2}
+
+For Question 2, we consider the following predicates:
+\begin{enumerate}
+	\item $ W = ( b \land \lnot c \land \lnot d ) $
+	\item $ X = ( b \land d ) \lor ( \lnot b \land \lnot d) $
+	\item $ Y = ( a \land b ) $
+	\item $ Z = (\lnot b \land d ) $
+\end{enumerate}
+
+\begin{enumerate}[(a)]
+	\item We give the Karnaugh map for the predicates. Note that the top row is $ab$ and the first column is $cd$
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|}
+			& 00 & 01 & 11 & 10 \\
+			\hline
+			00 & $X$ & $W$ & $WY$ & $X$ \\
+			\hline
+			01 & $Z$ & $X$ & $XY$ & $Z$ \\
+			\hline
+			11 & $Z$ & $X$ & $XY$ & $Z$ \\
+			\hline
+			10 & $X$ & & $Y$ & $X$ \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\item The minimal DNF expression that describes all cells that have more than one definition is $ab \notc + abd $.
+	\item The minimal DNF expression that describes all cells that have no definitions is $ \nota b c \notd $.
+	\item The minimal DNF expression that describes $ X \lor Z $ is $ \notb + d $.
+	\item A test set for $X$ that uses each prime implicant once is \{ TFFF, FTFT, FTTF \}.
+	\item A test set for $X$ that is guaranteed to detect all faults from Figure 8.2 in the book is \{ TTTT, TTTF, TTFT, TTFF, TFTT, TFTF, TFFT, TFFF, FTTT, FTTF, FTFT, FTFF, FFTT, FFTF, FFFT, FFFF \}.
+\end{enumerate}
+
+\end{document}

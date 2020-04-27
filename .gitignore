@@ -3,5 +3,9 @@
 *.log
 *.synctex.gz
 *.pdf
+*.pem
 /HW-5/PrimePath/target/
 /HW-5/PrimePaths/target/
+/HW-5/PrimePaths/nbproject/private/
+/HW-5/PrimePaths/build/
+/HW-5/PrimePaths/dist/
